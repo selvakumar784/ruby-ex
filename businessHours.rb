@@ -154,15 +154,15 @@ end
 
 
 #Object creation and method calls
-obj = BusinessHours.new("9:00 AM", "5:00 PM")#, "2016-04-28")
-obj.update(:thu, "10:00 AM", "4:00 PM")
-obj.update("2016-04-28", "10:00 AM", "5:00 PM")
-obj.closed("2016-04-30")
-obj.closed("sun")
+obj = BusinessHours.new("9:00 AM", "5:00 PM" , "2016-05-11")
+obj.update(:wed, "10:00 AM", "4:00 PM")
+obj.update("2016-05-11", "10:00 AM", "5:00 PM")
+obj.closed("2016-05-13")
+obj.closed("sat")
 
-BusinessHours.new("9:00 AM", "05:00 PM", "2016-04-29")
-BusinessHours.new("9:00 AM", "10:00 AM", "2016-05-02")
-BusinessHours.new("9:00 AM", "10:00 AM", "2016-05-03")
+BusinessHours.new("9:00 AM", "05:00 PM", "2016-05-12")
+BusinessHours.new("9:00 AM", "10:00 AM", "2016-05-15")
+BusinessHours.new("9:00 AM", "10:00 AM", "2016-05-16")
 
 
-obj.calculate_deadline(2 * 60 * 60, "2016-04-29 4:30 PM")
+obj.calculate_deadline(2 * 60 * 60, "2016-05-12 4:30 PM")
