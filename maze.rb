@@ -110,7 +110,7 @@ class Maze
         
         #Recurse for up, down, left and right positions.
         return true if solvable_maze(x1, y1 - 1) == true
-        return true if solvable_maze(x1, y1 + 1) == true
+        return true if solvable_maze(x1, y1 + 1) == true 
         return true if solvable_maze(x1 - 1, y1) == true
         return true if solvable_maze(x1 + 1, y1) == true
         return false
@@ -119,12 +119,11 @@ class Maze
     return false
   end
 
-  def solvable_maze_steps(x1, y1, len, minimum, ind)
+  def solvable_maze_steps(x1, y1, len, step_counts, index)
     #If destination reached, add number of steps taken for current route and return true
     if (x1 == @end_x && y1 == @end_y)
-      minimum[ind] = len 
-      ind = ind + 1
-      return true
+      step_counts[index] = len 
+      index = index + 1
     end
 
     if (x1 >= 0 && x1 <= @xmax && y1 >= 0 && y1 <= @ymax)
@@ -137,14 +136,12 @@ class Maze
         
         #Increment step coount and recurse for up, down, left and right positions.
         len = len + 1
-        return true if solvable_maze_steps(x1, y1 - 1, len, minimum, ind) == true
-        return true if solvable_maze_steps(x1, y1 + 1, len, minimum, ind) == true
-        return true if solvable_maze_steps(x1 - 1, y1, len, minimum, ind) == true
-        return true if solvable_maze_steps(x1 + 1, y1, len, minimum, ind) == true
-        return false
+        solvable_maze_steps(x1, y1 - 1, len, step_counts, index)
+        solvable_maze_steps(x1, y1 + 1, len, step_counts, index)
+        solvable_maze_steps(x1 - 1, y1, len, step_counts, index)
+        solvable_maze_steps(x1 + 1, y1, len, step_counts, index)
       end
     end
-    return false
   end
 
   def solvable?
@@ -155,26 +152,24 @@ class Maze
     res |= solvable_maze(@start_x + 1, @start_y)
     res |= solvable_maze(@start_x, @start_y - 1)
     res |= solvable_maze(@start_x, @start_y + 1)
-    return res;
   end
 
   def steps?
-    res = false
     len = 0
-    ind = 0
-    minimum = Hash.new(0)
+    index = 0
+    step_counts = Hash.new(0)
     
-    res |= solvable_maze_steps(@start_x - 1, @start_y, len, minimum, ind)
-    res |= solvable_maze_steps(@start_x + 1, @start_y, len, minimum, ind)
-    res |= solvable_maze_steps(@start_x, @start_y - 1, len, minimum, ind)
-    res |= solvable_maze_steps(@start_x, @start_y + 1, len, minimum, ind)
+    solvable_maze_steps(@start_x - 1, @start_y, len, step_counts, index)
+    solvable_maze_steps(@start_x + 1, @start_y, len, step_counts, index)
+    solvable_maze_steps(@start_x, @start_y - 1, len, step_counts, index)
+    solvable_maze_steps(@start_x, @start_y + 1, len, step_counts, index)
     
     #Find minimum step count
     min_steps = 999999;
-    for i in 0...minimum.length
-      min_steps = minimum[i] if minimum[i] < min_steps
+    for i in 0...step_counts.length
+      min_steps = step_counts[i] if step_counts[i] < min_steps
     end
-    return min_steps;
+    min_steps
   end
 end
 
